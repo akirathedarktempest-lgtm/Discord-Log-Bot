@@ -30,8 +30,8 @@ async def purge(ctx:commands.Context,number):
             await asyncio.sleep(5)
             await msg.delete()
     except Exception as e:
-        await ctx.channel.purge(limit=1)#and this is to avoid the purge, if in case someone uses !purge hello and deletes it, then the log will also ignore that, so even before the message could be sent, it will be deleted immediately so that users can't trick our dear mods
-        print(e)
+        #await ctx.channel.purge(limit=1)#and this is to avoid the purge, if in case someone uses !purge hello and deletes it, then the log will also ignore that, so even before the message could be sent, it will be deleted immediately so that users can't trick our dear mods
+        print(e)#i am removing this because i noticed it can be slow to delete itself, so await is not needed actually
 
 #NOW, THIS IS THE REAL LOG OF MESSAGES, this will give you a message which is deleted in the server
 
@@ -39,8 +39,8 @@ async def purge(ctx:commands.Context,number):
 async def on_message_delete(message:discord.Message):
     if message.author.bot: #this is because, if you want to clear the log, you deleted the bot message of log one by one, it will keep on posting that, so if the message is by bot, it will return nothing
         return
-    if message.content.startswith("!purge "):#this I used because purge command was deleting perfectly, just the command you said, !purge (like 3), it was deleting and the three messages were not coming on delete log, but the purge command was showing up so I just used it to avoid that
-        return
+    #if message.content.startswith("!purge "):#this I used because purge command was deleting perfectly, just the command you said, !purge (like 3), it was deleting and the three messages were not coming on delete log, but the purge command was showing up so I just used it to avoid that
+        #return#i am also removing this because it will just show one message, not so much necessary
     channel=message.guild.get_channel()#INSERT LOG CHANNEL ID IN ()
     embed=discord.Embed(title="Deleted Message",description=message.content)
     embed.set_footer(text=message.author,icon_url=message.author.display_avatar.url)
@@ -60,5 +60,7 @@ async def on_message_edit(before:discord.Message,after:discord.Message):
     channel=before.guild.get_channel()#INSERT LOG CHANNEL ID IN ()
     await channel.send(embed=embed)
   """THIS IS THE LOG OF MESSAGES, I WILL EXPAND IT AND COVER OTHERS AS WELL"""
+
+
 
 bot.run("TOKEN")
