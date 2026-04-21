@@ -61,6 +61,38 @@ async def on_message_edit(before:discord.Message,after:discord.Message):
     await channel.send(embed=embed)
   """THIS IS THE LOG OF MESSAGES, I WILL EXPAND IT AND COVER OTHERS AS WELL"""
 
+@bot.event
+async def on_guild_role_create(role:discord.Role):
+    embed=discord.Embed(description=f"Role ID: {role.id}\nName: {role.name}\nPosition: {role.position}\nPermissions: {role.permissions}\nColor: {role.color}\nTime when Created: {role.created_at} UTC")
+    channel=role.guild.get_channel()#INSERT LOG CHANNEL ID IN ()
+    await channel.send(embed=embed)
 
+#So basically, this will run when the user who has role manage permission creates a role, although this is not necessary because when a role is created, it will be "new role" only and nothing special it will do actually
 
+@bot.event
+async def on_guild_role_delete(role:discord.Role):
+    embed=discord.Embed(description=f"Role ID: {role.id}\nName: {role.name}\nPosition: {role.position}\nPermissions: {role.permissions}\nColor: {role.color}\nTime when Created: {role.created_at} UTC")
+    channel=role.guild.get_channel()#INSERT LOG CHANNEL ID IN ()
+    await channel.send("The Role is removed",embed=embed)
+
+#this will run when a role is deleted
+
+@bot.event
+async def on_guild_role_update(before:discord.Role,after:discord.Role): 
+    if before.name!=after.name: #we are using conditional statements because if one role gets updated, all the roles will be affected on their own and all the roles will appear, and can also break rate limits, so because of that, we only want this on specific updates and changes
+        pass
+    elif before.permissions!=after.permissions:
+        pass
+    elif before.color!=after.color:
+        pass #now why not position of the role isn't here? Because, for example, if you create a new role, by default the position will be 0 or 1 (last or below) and like, there are 20 roles and you take it to position 20, others will also be affected, because the earlier 20 will update to 19,19 will update to 18, and so on and all will be affected and the bot will send of each...a humanity student teaching math, haha
+    else:
+        return  
+    embed=discord.Embed()
+    embed.add_field(name="Before",value=f"Role ID: {before.id}\nName: {before.name}\nPosition: {before.position}\nPermissions: {before.permissions}\nColor: {before.color}\nTime when Created: {before.created_at} UTC")
+    embed.add_field(name="After",value=f"Role ID: {after.id}\nName: {after.name}\nPosition: {after.position}\nPermissions: {after.permissions}\nColor: {after.color}\nTime when Created: {after.created_at} UTC")
+    channel=before.guild.get_channel()#INSERT LOG CHANNEL ID IN ()
+    await channel.send(embed=embed)
+#THIS WILL RUN WHEN a role is updated, like when a new role is created, role creation will run, and if updated, this happen, important
+"""THIS IS NOW ROLE LOG, LOG CREATION, DELETE, UPDATE, ALTHOUGH THAT'S NOT SO MUCH NECESSARY...and that, role.permissions, that will give in number...there's a permission calculator at Discord Developer Portal, use that, I am not going to make the calculator bro, check by the calculator"""
+#refrences are from Event Refrence, discord.py docs, https://discordpy.readthedocs.io/en/latest/api.html#event-reference check it out and I will cover more by that only
 bot.run("TOKEN")
