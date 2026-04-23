@@ -95,4 +95,49 @@ async def on_guild_role_update(before:discord.Role,after:discord.Role):
 #THIS WILL RUN WHEN a role is updated, like when a new role is created, role creation will run, and if updated, this happen, important
 """THIS IS NOW ROLE LOG, LOG CREATION, DELETE, UPDATE, ALTHOUGH THAT'S NOT SO MUCH NECESSARY...and that, role.permissions, that will give in number...there's a permission calculator at Discord Developer Portal, use that, I am not going to make the calculator bro, check by the calculator"""
 #refrences are from Event Refrence, discord.py docs, https://discordpy.readthedocs.io/en/latest/api.html#event-reference check it out and I will cover more by that only
+
+#NOW HERE, we will start channel log, new channel created, deleted, updated
+
+@bot.event
+async def on_guild_channel_create(channel:discord.abc.GuildChannel):#this is channel creation log
+    embed=discord.Embed(title="New channel created!")
+    embed.add_field(name="Category",value=channel.category.name)#this is similar to the roles one actually
+    embed.add_field(name="Categor ID",value=channel.category_id)
+    embed.add_field(name="Channel Name",value=channel.name)
+    embed.add_field(name="Channel ID",value=channel.id)
+    embed.add_field(name="Channel Type",value=channel.type)
+    embed.add_field(name="Position",value=channel.position)
+    chan=channel.guild.get_channel()#INSERT CHANNEL ID WHERE YOU WANT THE LOG MESSAGES
+    await chan.send(embed=embed)
+
+@bot.event
+async def on_guild_channel_delete(channel:discord.abc.GuildChannel):#this will run when the channel is deleted
+    embed=discord.Embed(title="Channel was deleted :(")
+    embed.add_field(name="Category",value=channel.category.name)
+    embed.add_field(name="Categor ID",value=channel.category_id)
+    embed.add_field(name="Channel Name",value=channel.name)
+    embed.add_field(name="Channel ID",value=channel.id)
+    embed.add_field(name="Channel Type",value=channel.type)
+    embed.add_field(name="Position",value=channel.position)
+    chan=channel.guild.get_channel()#INSERT CHANNEL ID WHERE YOU WANT THE LOG MESSAGES
+    await chan.send(embed=embed)
+
+@bot.event
+async def on_guild_channel_update(before:discord.abc.GuildChannel,after:discord.abc.GuildChannel):#this will run...when the channel is updated...haha...i am becoming mad after testing...haha
+    if before.category.name!=after.category.name:#CUZ IT DID THE SAME WHAT ROLE WAS DOING, I thought...if one channel gets updated, then why would others do...but they will do...so I had to put this
+        pass
+    elif before.name!=after.name:
+        pass
+    elif before.type!=after.type:
+        pass#and there's a position argument as well...just think about it, you have 40 channels, made one on the last...and taken to first...why am i laughing, but yes, position is there of chanels like roles have
+    else:
+        return
+    embed=discord.Embed(title="A Channel was updated!")
+    embed.add_field(name="Before",value=f"Category: {before.category.name}\nCategory ID: {before.category_id}\nChannel Name:{before.name}\nChannel ID:{before.id}\nChannel Type:{before.type}")
+    embed.add_field(name="After",value=f"Category: {after.category.name}\nCategory ID: {after.category_id}\nChannel Name:{after.name}\nChannel ID:{after.id}\nChannel Type:{after.type}")
+    channel=before.guild.get_channel()#INSERT CHANNEL ID WHERE YOU WANT THE LOG MESSAGES
+    await channel.send(embed=embed)
+
+"""And this is Channel log, you can change, add more according to the docs https://discordpy.readthedocs.io/en/latest/api.html#event-reference and then find channel"""
+
 bot.run("TOKEN")
